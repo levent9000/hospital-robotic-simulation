@@ -1,74 +1,101 @@
-# AWS RoboMaker Hospital World ROS package
+# Hospital Robotic Simulation
 
-**Visit the [AWS RoboMaker website](https://aws.amazon.com/robomaker/) to learn more about building intelligent robotic applications with Amazon Web Services.**
+This repository is part of a bachelor thesis project focused on building a simulated service robot scenario in a hospital environment.
 
-![Model: Hospital World](docs/images/hospital_world.jpg)
-### Supported versions of Gazebo
-7.14.0+ | 9.16.0+
+The project is based on an existing hospital world and is being adapted for use with modern Gazebo (`gz sim`) and ROS 2.
 
-Note: `python3` and `python3-pip` is required to run this world.
+---
 
-## 3D Models included in this Gazebo World
+## Project goal
 
-| Model (/models)       | Picture           |
-| :------------- |:-------------:|
-| **aws_robomaker_hospital_elevator_01_car, aws_robomaker_hospital_elevator_01_door, aws_robomaker_hospital_elevator_01_portal**     | ![Model: Elevator](docs/images/elevator.png) |
-| **aws_robomaker_hospital_curtain_closed_01, aws_robomaker_hospital_curtain_half_open_01, aws_robomaker_hospital_curtain_open_01**     | ![Model: Curtains](docs/images/curtains.png) |
-| **aws_robomaker_hospital_nursesstation_01**    | ![Model: Nurses Station](docs/images/nurses_station.png)
-| **aws_robomaker_hospital_hospitalsign_01**    | ![Model: Hospital Sign](docs/images/hospital_sign.png)
-| **aws_robomaker_hospital_floor_01_floor**    | ![Model: Hospital Floor](docs/images/hospital_floor.png)
-| **aws_robomaker_hospital_floor_01_walls**    | ![Model: Hospital Walls and Layout](docs/images/hospital_walls.png)
-| **aws_robomaker_hospital_floor_01_ceiling**    | ![Model: Ceiling](docs/images/hospital_ceiling.png)
+The goal is to build and evaluate a simulated care-service robot scenario in a hospital-like environment, including:
 
-We also reference the following models from https://app.ignitionrobotics.org/fuel/models:
+* hospital world simulation
+* robot navigation
+* object delivery workflow
+* later manipulation and task execution
 
-*XRayMachine, IVStand, BloodPressureMonitor, BPCart, BMWCart, CGMClassic, StorageRack, Chair, InstrumentCart1, Scrubs, PatientWheelChair, WhiteChipChair, TrolleyBed, SurgicalTrolley, PotatoChipChair, VisitorKidSit, FemaleVisitorSit, AdjTable, MopCart3, MaleVisitorSit, Drawer, OfficeChairBlack, ElderLadyPatient, ElderMalePatient, InstrumentCart2, MetalCabinet, BedTable, BedsideTable, AnesthesiaMachine, TrolleyBedPatient, Shower, SurgicalTrolleyMed, StorageRackCovered, KitchenSink, Toilet, VendingMachine, ParkingTrolleyMin, PatientFSit, MaleVisitorOnPhone, FemaleVisitor, MalePatientBed, StorageRackCoverOpen, ParkingTrolleyMax*
+---
 
+## Repository structure
 
-# Include the world from another package
-
-* Update .rosinstall to clone this repository and run `rosws update`
-```
-- git: {local-name: src/aws-robomaker-hospital-world, uri: 'https://github.com/aws-robotics/aws-robomaker-hospital-world.git', version: master}
-```
-* Add the following to your launch file:
-```xml
-<launch>
-  <!-- Launch World -->
-  <include file="$(find aws_robomaker_hospital_world)/launch/hospital.launch"/>
-  ...
-</launch>
-```
-
-# Load directly into Gazebo (without ROS)
-```bash
-chmod +x setup.sh
-./setup.sh
-export GAZEBO_MODEL_PATH=`pwd`/models:`pwd`/fuel_models
-gazebo worlds/hospital.world
+```text
+hospital-robotic-simulation/
+├── worlds/                 # Gazebo world files
+├── models/                 # Local models
+├── photos/                 # Textures used in the world
+├── docs/                   # Notes and diagrams
+├── ros2_ws/                # ROS 2 workspace (to be extended)
+│   └── src/
+│       ├── hospital_bringup/
+│       ├── hospital_navigation/
+│       ├── hospital_manipulation/
+│       ├── hospital_interfaces/
+│       └── hospital_tasks/
+├── config/                 # Configuration files (Nav2, RViz, etc.)
+├── bootstrap.sh            # Setup script
+├── run.sh                  # Start simulation
+├── setup.sh                # Downloads required models
+├── requirements.txt        # Python dependencies
+└── README.md
 ```
 
-# ROS Launch with Gazebo viewer (without a robot)
-```bash
-# build for ROS
-rosdep install --from-paths . --ignore-src -r -y
-colcon build
+---
 
-# run in ROS
-source install/setup.sh
-roslaunch aws_robomaker_hospital_world view_hospital.launch
-```
+## Requirements
 
-# Building
-Include this as a .rosinstall dependency in your SampleApplication simulation workspace. `colcon build` will build this repository.
+* Ubuntu 24.04 (WSL works)
+* Python 3
+* Git
+* Gazebo with `gz sim`
 
-To build it outside an application, note there is no robot workspace. It is a simulation workspace only.
+---
+
+## Installation
+
+Clone the repository:
 
 ```bash
-$ rosws update
-$ rosdep install --from-paths . --ignore-src -r -y
-$ chmod +x setup.sh
-$ ./setup.sh
-$ colcon build
+git clone git@github.com:levent9000/hospital-robotic-simulation.git
+cd hospital-robotic-simulation
 ```
 
+Run the setup script:
+
+```bash
+./bootstrap.sh
+```
+
+This will create a virtual environment, install Python dependencies, and download all required models.
+
+---
+
+## Running the simulation
+
+Start the hospital world:
+
+```bash
+./run.sh
+```
+
+This will configure the environment and launch the simulation using `gz sim`.
+
+---
+
+## Acknowledgment
+
+This project is based on:
+
+* AWS RoboMaker Hospital World
+  https://github.com/aws-robotics/aws-robomaker-hospital-world
+
+The original project provides the hospital simulation environment.
+This work adapts and extends it for use with ROS 2 and modern tools.
+
+---
+
+## Status
+
+* hospital world runs successfully
+* repository structure prepared
+* ROS 2 integration in progress
