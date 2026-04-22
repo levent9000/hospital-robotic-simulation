@@ -1,14 +1,4 @@
-# Python
-.venv/
-__pycache__/
-
-# ROS / build
-build/
-install/
-log/
-
-# Gazebo caches
-*.log
-
-# OS
+deps
+downloads
+fuel_models
 .DS_Store
