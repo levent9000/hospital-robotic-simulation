@@ -147,6 +147,7 @@ The original project provides the hospital simulation environment.
 This work adapts and extends it for use with ROS 2 and modern tools.
 
 Licensed under the MIT-0 License.
+
 ---
 
 ## Status
